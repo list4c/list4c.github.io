@@ -15,10 +15,10 @@ gem "minima", "2.5.1"
 gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!
 group :jekyll_plugins do
-  gem "jekyll-feed", "0.15.1"
+  gem "jekyll-feed", "0.12"
 end
 
 # Additional plugin to show how many days ago something was posted
 group :jekyll_plugins do
-  gem "jekyll-timeago", "0.13.1"
+  gem 'jekyll-timeago', "0.13.1"
 end
