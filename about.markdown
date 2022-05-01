@@ -4,4 +4,7 @@ title: About
 permalink: /about/
 ---
 
-Not much here yet..
+Tester:
+- Cypress
+- detox
+- pytest
