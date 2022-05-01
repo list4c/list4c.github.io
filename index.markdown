@@ -5,9 +5,9 @@
 layout: home
 ---
 
-Welcome to My Home Page
+Passiontalk Blog
 
-{% assign date = '2020-04-13T10:20:00Z' %}
+{% assign date = '2022-05-01T23:30:00Z' %}
 
-- Original date - {{ date }}
+- First deployed - {{ date }}
 - With timeago filter - {{ date | timeago }}
