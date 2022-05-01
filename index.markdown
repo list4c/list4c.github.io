@@ -7,7 +7,7 @@ layout: home
 
 Passiontalk Blog
 
-{% assign date = '2022-05-01T23:30:00Z' %}
+{% assign date = '2022-05-01' %}
 
-- First deployed - {{ date }}
+- First deployed on {{ date }}
 - With timeago filter - {{ date | timeago }}
