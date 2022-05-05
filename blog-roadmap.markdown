@@ -16,4 +16,5 @@ permalink: /roadmap/
 - [ ] Add one more new post
 - [ ] Add a comments plugin
 - [ ] Experiment with a remote template
+- [ ] Learn how to add gists to the posts
 
