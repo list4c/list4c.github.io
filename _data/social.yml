@@ -1,0 +1,6 @@
+- title: Email
+  url: mailto:marius.listevnik@gmail.com
+  icon: fas fa-envelope
+- title: GitHub
+  url: https://github.com/list4c
+  icon: fab fa-github
