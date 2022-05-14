@@ -14,8 +14,11 @@ permalink: /roadmap/
 
 # TO DOs
 - [x] Create aliases for Jekyll commands
-- [ ] Add one more new post
-- [x] Add a comments plugin
-- [x] Experiment with a remote template
+- [ ] Add 2nd post
+- [x] Add a comments plugin (Disqus)
+- [x] Install a remote theme
 - [ ] Learn how to add gists to the posts
+- [x] Add reading time to posts
+- [ ] Install a plugin to speed up post creation (jekyll-compose)
+- [ ] Try out the static comments option
 
