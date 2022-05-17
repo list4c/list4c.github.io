@@ -4,10 +4,3 @@
 
 layout: home
 ---
-
-Passiontalk Blog
-
-{% assign date = '2022-05-01' %}
-
-- First deployed on {{ date }}
-- With timeago filter - {{ date | timeago }}

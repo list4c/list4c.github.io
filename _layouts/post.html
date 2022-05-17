@@ -46,6 +46,8 @@ layout: default
     <img class="post-image" src="{{ page.image | relative_url }}" alt="{{ post.title }}">
   {% endif %}
 
+  <span class="post-metadata"> Published {{ page.date | timeago }}. </span> 
+
   {% include read-time.html %}
 
   <div class="post-content">

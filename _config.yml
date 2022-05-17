@@ -27,6 +27,20 @@ url: "https://list4c.github.io" # the base hostname & protocol for your site, e.
 github_username:  list4c
 disqus: list4c
 
+# Settings for Jekyll Compose
+jekyll_compose:
+  default_front_matter:
+    drafts:
+      layout:
+      title:
+      date:
+      categories:
+    posts:
+      layout:
+      title:
+      date:
+      categories:
+
 # Build settings
 remote_theme: vfvong/jekyll-theme-tao
 plugins:
@@ -54,3 +68,4 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
