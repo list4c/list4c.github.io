@@ -42,12 +42,13 @@ jekyll_compose:
       categories:
 
 # Build settings
-remote_theme: vfvong/jekyll-theme-tao
+theme: jekyll-theme-tao
+
 plugins:
   - jekyll-feed
   - jekyll-timeago
-  - github-pages
-  - jekyll-remote-theme
+
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
