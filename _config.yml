@@ -26,6 +26,8 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://list4c.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  list4c
 disqus: list4c
+tags_path: /tags/
+
 
 # Settings for Jekyll Compose
 jekyll_compose:
@@ -34,12 +36,12 @@ jekyll_compose:
       layout:
       title:
       date:
-      categories:
+      tags:
     posts:
       layout:
       title:
       date:
-      categories:
+      tags:
 
 # Build settings
 theme: jekyll-theme-tao
