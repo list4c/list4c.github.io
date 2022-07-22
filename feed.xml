@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://list4c.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://list4c.github.io/" rel="alternate" type="text/html" /><updated>2022-07-22T08:15:46+00:00</updated><id>https://list4c.github.io/feed.xml</id><title type="html">Passiontalk blog</title><subtitle>Even little thinks matter</subtitle><entry><title type="html">How to access your favourite docs the green way</title><link href="https://list4c.github.io/2022/07/03/offline-docs.html" rel="alternate" type="text/html" title="How to access your favourite docs the green way" /><published>2022-07-03T11:59:00+00:00</published><updated>2022-07-03T11:59:00+00:00</updated><id>https://list4c.github.io/2022/07/03/offline-docs</id><content type="html" xml:base="https://list4c.github.io/2022/07/03/offline-docs.html"><![CDATA[<p>Some time ago I was writing a Cypress test and opening a lot of tabs with Cypress documentation. At some point I became haunted by the idea that opening these doc pages over and over multiple times is a waste of energy and may have some impact on climate change.</p>
+
+<p>Hours later I was becoming acquainted with the reports about the impact of ICT (Informatics and Communication Technology) on our planet. I learned that although many digital services, like AI, help us optimize resources and reduce waste, ICT still contributes to green house gas emissions (GHGE) because of infrastructure needed to run it. The level of GHGE emissions attributed to ICT is increasing with every year, as there are more and more digital services and Internet users in general. Bottom line: some of the most energy-hungry forms of ICT are video streaming, bitcoin mining and AI. Compared to those, my transgressions appeared minute. But I still felt something could be done about my browsing habits.</p>
+
+<p>So I restated my problem: I was opening and closing the same websites, thereby leading to waste. And I came up with several ideas, specifically for the dev documentation:</p>
+
+<h3 id="cloning-the-whole-docs-repo">cloning the whole docs repo</h3>
+
+<p><img src="/assets/images/cypress-docs.png" alt="Cypress docs running on localhost" class="img-responsive" /></p>
+
+<p>“Great idea” :D, I thought to myself. I could clone the <a href="docs.cypress.io/">repo of Cypress docs</a> and would then be able to save on network requests. But I soon came to the conclusion that it was only a half-great solution. Cypress documentation is pretty big. As you can imagine, cloning the whole repo and installing all the dependencies was more than a couple hundred megabytes. Not that sustainable I guess… And if you want to have some other documentation repositories  accessible offline in the same manner, you would need to follow the same procedure for all of them. Too time-consuming and resource-exhaustive.</p>
+
+<h3 id="devdocsio"><a href="https://devdocs.io/">devdocs.io</a></h3>
+
+<p><img src="/assets/images/devdocs.png" alt="Dev.docs example" class="img-responsive" /></p>
+
+<p>So I looked a bit further and found devdocs.io. You could compare it to a wiki with offline capabilities. It has lots of APIs listed, i.e. programming languages, markup languages, frameworks, and you can select chosen documentation packages to your local storage so that browsing the docs requires no internet at all. Yippee! Finally I found something that was a comprehensive answer to my problem.</p>
+
+<h3 id="zeal"><a href="https://zealdocs.org/">Zeal</a></h3>
+
+<p><img src="/assets/images/zeal-example.png" alt="Dev.docs example" class="img-responsive" /></p>
+
+<p>I thought I found the ultimate solution with devdocs.io, but some time a later a developer in my team told us about an app that did the same and could be installed as Linux package. Enter Zeal. Zeal is a pretty powerful tool which allows you to choose from over 200 APIs. It is inspired by <a href="https://kapeli.com/dash">Dash</a>, a similar tool that works on MacOS. Zeal also uses Dash’s documentation library, so I guess the two of them have identical resources.</p>
+
+<p>How to install Zeal in Debian/Ubuntu distributions:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>apt <span class="nb">install </span>zeal </code></pre></figure>
+
+<p>Installation  worked nicely in Ubuntu 20.10 but then I tried installing it on my Debian machine:</p>
+
+<p><img src="/assets/images/zeal-non.png" alt="Example of a search in zeal" class="img-responsive" /></p>
+
+<p>Ouch! Not working in Debian Bullseye?</p>
+
+<p>Indeed. The <em>zeal</em> package is not supported in the stable version of Debian. But you can add one of the Debian packages that contain <em>zeal</em> and after updating your package sources, you’re good to go.</p>
+
+<p>The list of packages which support zeal in Debian can be found <a href="https://packages.Debian.org/search?suite=all&amp;searchon=names&amp;keywords=zeal">here</a>. One of the packages is bullseye-backports - a pretty clever way to get updates for a specific package from the Debian testing distribution (at the time of publishing this post, the codename for next release is <em>bookworm</em>) to your stable Bullseye system. You get the best of both worlds, i.e. a package that has not arrived in Debian stable yet, or a newer version of a package which is not yet available for users of the stable distribution.</p>
+
+<p>How to enable a backports repository for my Debian Bullseye? I followed advice from <a href="https://wiki.Debian.org/Backports">this article</a>.If you don’t want to read through it and need an easy fix, just type this in your terminal (use <code class="language-plaintext highlighter-rouge">sudo</code> if needed)</p>
+
+<p><code class="language-plaintext highlighter-rouge">apt update</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">apt edit-sources</code></p>
+
+<p>(here choose a text editor by typing a number)</p>
+
+<p>Now at this point it’s pretty possible that you will see a list of repositories for updates to your release.</p>
+
+<p>This is how it looked in my vim editor after enabling the Bullseye-backports:</p>
+
+<p><img src="/assets/images/apt-sources.png" alt="Apt sources content in the vim editor" class="img-responsive" /></p>
+
+<p>As you can seen, there is a list called Bullseye-updates. Below you will see a list of links, some of them commented out. All that needs to be done is to remove the <code class="language-plaintext highlighter-rouge">#</code> at <code class="language-plaintext highlighter-rouge">deb http://deb.debian.org/debian bullseye-backports main contrib non-free</code> and save changes to the document. (Note: you don’t need the <a href="https://unix.stackexchange.com/questions/20504/the-difference-between-deb-versus-deb-src-in-sources-list">deb-src package</a> if you’re not developing or testing Debian packages).</p>
+
+<p>However, if you do not see such a ready-made list, add <code class="language-plaintext highlighter-rouge">deb http://deb.debian.org/debian bullseye-backports main contrib non-free</code> at the bottom and save changes.</p>
+
+<p>Then:</p>
+
+<p><code class="language-plaintext highlighter-rouge">apt update</code>
+<code class="language-plaintext highlighter-rouge">apt install zeal</code></p>
+
+<p>And you’re there (for Debian Bullseye).</p>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<p>I must confess that using offline documentation has not become my second nature yet. But when you realise that you can have a tool which contains many documentations in one place, such as Zeal or devdocs.io, you start to appreciate it.</p>
+
+<p>Have I found all the libraries I was interested in? Yes, pretty much all of them, except <a href="https://github.com/wix/detox"><em>detox</em></a>. Some libraries were present in devdocs.io, but no in Zeal and I have a feeling that devdocs.io might have a bit more of them than Zeal, e.g. I found Jest and Cypress in devdocs.io, but not in Zeal. So I’m not sure yet which of these two I will be using most, but definitely plan to use them and:</p>
+<ul>
+  <li>save precious energy</li>
+  <li>save time</li>
+</ul>
+
+<p>Hope it helps you as well. Till next time!</p>
+
+<h3 id="links">Links:</h3>
+
+<p><a href="https://datareportal.com/reports/digital-2022-global-overview-report">Digital 2022: Global Overview Report</a> - Comprehensive report with lots of data on the number of Internet users worldwide, trends, market share and lots of other interesting findings
+<a href="https://climate.nasa.gov/facts/">Global climate change: Vital Signs of the Planet</a> - Website by NASA clearly presented the facts on global warming
+<a href="https://www.sciencedirect.com/science/article/abs/pii/S095965261733233X">Assessing ICT global emissions footprint: Trends to 2040 &amp; recommendations</a> - Scientific article on measuring the carbon footprint of ICT, which may rise up to even 16% of total GHGE emissions in 2040
+<a href="https://www.bbc.com/future/article/20200305-why-your-internet-habits-are-not-as-clean-as-you-think">Why your internet habits are not as clean as you think</a> - a very well written article from BBC which presents most important facts about the carbon footprint of ICT and what we can to reduce it as individual users
+<a href="https://theshiftproject.org/en/carbonalyser-browser-extension/">Carbonalyser website</a> - Carbonalyser is a browser extension published by NGO The Shift Project. It makes you more aware of the green house gas emissions you produce as a user and shows whch websites are most CO2-intensive.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Some time ago I was writing a Cypress test and opening a lot of tabs with Cypress documentation. At some point I became haunted by the idea that opening these doc pages over and over multiple times is a waste of energy and may have some impact on climate change.]]></summary></entry><entry><title type="html">e2e testing with Detox</title><link href="https://list4c.github.io/2022/04/26/Detox.html" rel="alternate" type="text/html" title="e2e testing with Detox" /><published>2022-04-26T12:31:00+00:00</published><updated>2022-04-26T12:31:00+00:00</updated><id>https://list4c.github.io/2022/04/26/Detox</id><content type="html" xml:base="https://list4c.github.io/2022/04/26/Detox.html"><![CDATA[<h3 id="what-is-detox">What is detox?</h3>
+
+<p>Detox is an open-source framework for testing mobile applications, especially those written in React Native. It is highly configurable and easy to install using <code class="language-plaintext highlighter-rouge">yarn</code> or <code class="language-plaintext highlighter-rouge">npm</code>. It was created by developers of <a href="https://www.wix.com">Wix</a> company to aid in their release process.</p>
+
+<h3 id="where-can-you-get-detox">Where can you get detox?</h3>
+
+<p>The docs for detox are available <a href="https://wix.github.io/Detox/docs/introduction/getting-started/">here</a>. You might also be interested in <a href="https://hackernoon.com/detox-gray-box-end-to-end-testing-framework-for-mobile-apps-196ccd9564ce">this</a> article from the authors of Detox, where they explain the road towards creating a testing framework and how they tried Appium but were not satisfied with the flakiness.</p>
+
+<h3 id="flakiness---serious-problem">Flakiness - serious problem</h3>
+
+<p>I’ll bring one interesting fact from that second article: In a test suite with 100 tests, a 0.5% chance of any test failing due to flakiness means that there is almost 40% chance of a failed test run (!). Think about larger suites… this calculation really stuck in my mind. Fortunately, detox comes to the rescue. It does not require sleeps and waits. What is more, it automatically detects when application is in idle state.</p>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<p>This short article was meant to provide a concise picture of detox as a testing framework. I hope it helps you to ensure a stable release process without flake.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[What is detox?]]></summary></entry></feed>
