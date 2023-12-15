@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="/assets/css/normalize.css"/>
+	<link rel="stylesheet" href="/assets/css/open-color.css"/>
+	<link rel="stylesheet" href="/assets/css/tao/styles.css"/>
+
+  <script async src="https://use.fontawesome.com/releases/v6.0.0/js/all.js"></script>
+
+  
+
+</head>
+
+  <body>
+    <div class="wrapper">
+      <header class="masthead">
+  <h2 class="masthead-title">
+    <a href="/">Passiontalk blog</a>
+  </h2>
+  
+  
+    <nav class="nav">
+      
+        <a class="nav-item " href="/">
+          Home
+        </a>
+      
+        <a class="nav-item " href="/about">
+          About
+        </a>
+      
+        <a class="nav-item " href="/roadmap">
+          Roadmap
+        </a>
+      
+        <a class="nav-item " href="/archive">
+          Archive
+        </a>
+      
+      </nav>
+  
+</header>
+
+      <main>
+        <article class="post">
+  <div class="post-meta post-meta-top">
+    <div>
+      <time datetime="2022-12-25T22:15:00+00:00">
+        <i class="fa-solid fa-calendar-days"></i> 25 Dec 2022
+      </time></div>
+    
+    
+  </div>
+
+  <h1 class="post-title">Use Bash aliases to speed up your work</h1>
+  
+
+  
+
+  <span class="post-metadata"> Published 11 months and 3 weeks ago. </span> 
+
+  <span class="post-metadata" title="Estimated read time">
+  Reading time: 
+  
+  
+    5 mins
+  
+</span>
+
+
+
+  <div class="post-content">
+    <h3 id="bash-aliases">Bash aliases?</h3>
+
+<p>Bash aliases allow you to run complex instructions to your terminal with a just a few keystrokes. For example, you can have 
+an alias for some routine task which takes time to type and is tedious.</p>
+
+<p><code class="language-plaintext highlighter-rouge">git add</code> -&gt; <code class="language-plaintext highlighter-rouge">gad</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">git commit -m</code> -&gt; <code class="language-plaintext highlighter-rouge">gct</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">git push</code> -&gt; <code class="language-plaintext highlighter-rouge">gps</code></p>
+
+<p>This small example shows how three git commands
+that often form part of your everyday workflow
+can be executed much faster using aliases.</p>
+
+<h3 id="how-to-set-up-bash-aliases-ubuntu">How to set up bash aliases (Ubuntu)</h3>
+
+<p>The bash aliases can be set up within the bashrc file (<code class="language-plaintext highlighter-rouge">.bashrc</code>), but it’s in my opinion
+much more convenient to use a dedicated file <code class="language-plaintext highlighter-rouge">.bash_aliases</code>, where you define your aliases only.</p>
+
+<h4 id="1-check-if-your-bashrc-file-contains-an-entry-like-this">1. Check if your bashrc file contains an entry like this:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+</code></pre></div></div>
+<p>This piece of code checks for the existence of <code class="language-plaintext highlighter-rouge">.bash_aliases</code> file within the home directory
+of current user and will make your aliases available to the terminal.</p>
+
+<p>To check the <code class="language-plaintext highlighter-rouge">bashrc</code> file within <code class="language-plaintext highlighter-rouge">vi</code> text editor, type these commands in your terminal:</p>
+
+<p><code class="language-plaintext highlighter-rouge">vi ~/.bashrc</code></p>
+
+<p><strong>Note</strong>: if you don’t feel comfortable viewing and editing <code class="language-plaintext highlighter-rouge">bashrc</code> file with vi, you can use the default Linux text editor,
+gedit. In Ubuntu, go to the Applications menu, type <code class="language-plaintext highlighter-rouge">Text editor</code> or <code class="language-plaintext highlighter-rouge">gedit</code> and then look for the <code class="language-plaintext highlighter-rouge">.bashrc</code> in the <code class="language-plaintext highlighter-rouge">Home</code> 
+directory of your user. This file can sometimes be hidden by default, so make sure you enable the display of hidden files.</p>
+
+<p><strong>Note 2</strong>: I use <code class="language-plaintext highlighter-rouge">vi</code> to show how I edit files in the terminal, but <code class="language-plaintext highlighter-rouge">vim</code> is an equally valid option and the same commands can be used with it.</p>
+
+<h4 id="2-optional-activate-bash_aliases-in-bashrc">2. Optional: Activate <code class="language-plaintext highlighter-rouge">bash_aliases</code> in bashrc</h4>
+
+<p><em>Skip this step if you found an entry like in (1) within your bashrc file.</em></p>
+
+<p>To add above snippet to your bashrc file with vi:</p>
+<ul>
+  <li>with the keyboard arrow keys find a place in the document where you can paste the snippet
+    <ul>
+      <li>If you need to make some space, press <code class="language-plaintext highlighter-rouge">i</code> for insert mode. Exit insert mode using <code class="language-plaintext highlighter-rouge">Escape</code> key</li>
+    </ul>
+  </li>
+  <li>select the above snippet with your mouse</li>
+  <li>with the middle mouse button paste the snippet
+    <ul>
+      <li>You can also use copy the snippet with ctr-C, mouse-right click in vi, select “Paste” option from context menu</li>
+    </ul>
+  </li>
+  <li>Save the document using <code class="language-plaintext highlighter-rouge">:wq</code>
+    <ul>
+      <li>If you made a mistake, you can type ‘:wq!’ and this will abort changes</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Now it’s time to reload the bashrc configuration. Go to the terminal (if you’re not there already) and type:</p>
+
+<p><code class="language-plaintext highlighter-rouge">source ~/.bashrc</code></p>
+
+<p>If you see no output, that’s fine. Your changes were saved.</p>
+
+<h4 id="3-check-if-you-have-the-bash_aliases-file">3. Check if you have the .bash_aliases file</h4>
+
+<p>Now that the bashrc file is linked yo the <code class="language-plaintext highlighter-rouge">bash_aliases</code> file,  you can add 
+aliases there and make available by reloading the <code class="language-plaintext highlighter-rouge">bashrc</code> just as we did in the end of step 2.</p>
+
+<p>Check if you have the bash_aliases already in your home directory. Using the terminal:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ls .bash*</code></p>
+
+<p>The output for me was</p>
+
+<p><code class="language-plaintext highlighter-rouge">.bash_aliases  .bash_history  .bash_logout  .bash_profile  .bashrc</code></p>
+
+<p>I already have the <code class="language-plaintext highlighter-rouge">.bash_aliases</code> file, great.</p>
+
+<h5 id="4-create-the-bashrc-file">4. Create the <code class="language-plaintext highlighter-rouge">.bashrc</code> file</h5>
+
+<p><em>Skip this step if you found the <code class="language-plaintext highlighter-rouge">.bash_aliases</code> in your home directory</em></p>
+
+<p>Here are the steps in vi/vim:</p>
+
+<p><code class="language-plaintext highlighter-rouge">cd ~</code>
+<code class="language-plaintext highlighter-rouge">touch .bash_aliases</code></p>
+
+<p>This will create an empty file that you can use in next step.</p>
+
+<h4 id="5-add-your-test-alias">5. Add your test alias</h4>
+
+<p>Let’s add a fun alias - a mock response of the terminal whenever you type <code class="language-plaintext highlighter-rouge">hi</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">cd ~</code><br />
+<code class="language-plaintext highlighter-rouge">vi .bash_aliases</code></p>
+
+<p>Now that you’re with vi editor, press <code class="language-plaintext highlighter-rouge">i</code> for insert mode and write (or paste) this alias:</p>
+
+<p><code class="language-plaintext highlighter-rouge">alias hi='echo "Oh hello, sunshine! You look stunning today!!"'
+</code></p>
+
+<h4 id="lets-remember-a-few-key-points">Let’s remember a few key points:</h4>
+<ul>
+  <li>There must be not blank spaces between <code class="language-plaintext highlighter-rouge">alias</code>, the equals sign, and the alias value.</li>
+  <li>The alias value must be enclosed within quotes (single or double, your choice).</li>
+  <li>The alias has to be saved and then the bashrc file reloaded. Only then will it be available in your temrinal.</li>
+</ul>
+
+<p>Save changes and activate alias:</p>
+<ul>
+  <li>leave insert mode by pressing <code class="language-plaintext highlighter-rouge">Escape</code> key</li>
+  <li>type <code class="language-plaintext highlighter-rouge">:wq</code></li>
+  <li><code class="language-plaintext highlighter-rouge">source ~/.bashrc</code></li>
+</ul>
+
+<h4 id="6-check-if-the-test-alias-works">6. Check if the test alias works</h4>
+
+<p>Now, whenever you type <code class="language-plaintext highlighter-rouge">hi</code> in the terminal, you will be greeted by:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Oh hello, sunshine! You look stunning today!!</code></p>
+
+<p>So now we know how aliases work in general. To make new aliases, simply make a new line and add
+a new alias.</p>
+
+<h5 id="7-bonous-access-and-add-aliases-faster-using-aliases-">7. Bonous: Access and add aliases faster using… aliases :)</h5>
+
+<p>I have two aliases defined that help me quickly access the saved aliases and add new ones:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alias aldit='vim /home/list4c/.bash_aliases'
+alias reload='source /home/list4c/.bashrc'
+</code></pre></div></div>
+
+<p>With these aliases my workflow goes like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aldit
+(add new alias in new line using vim)
+(Esc)
+:wq
+reload
+</code></pre></div></div>
+<p>This is quick enough for me, especially that the saved aliases save me
+a lot of typing in the long run.<br />
+Try having meta-aliases as above, I really like them.</p>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<p>Bash aliases can speed up your work immensely. I’ve been using them for:</p>
+<ul>
+  <li>git commands</li>
+  <li>running gradle commands</li>
+  <li>running the React Native bundler with some flags</li>
+  <li>running jekyll commands</li>
+  <li>and more…</li>
+</ul>
+
+<p>Hope this post was beneficial for you in any way. If you have any questions, feel free to contact me.</p>
+
+  </div>
+
+  
+</article>
+
+<div class="pagination">
+  
+    <a class="prev post-prev" href="/2022/07/03/offline-docs.html">
+      <i class="fas fa-chevron-left"></i> <span class="">How to access your favourite docs the green way
+</span>
+    </a>
+  
+  
+  
+    <a class="next post-next" href="/2023/01/02/watch-yourstep.html">
+      <span class="">Offtop: Watch your step while running
+</span> <i class="fas fa-chevron-right"></i> 
+    </a>
+  
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+  var disqus_config = function () {
+    this.page.url = 'https://list4c.github.io/2022/12/25/use-bash-aliases.html';
+    this.page.identifier = 'https://list4c.github.io/2022/12/25/use-bash-aliases.html';
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = 'https://list4c.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </main>
+      <footer class="footer">
+  
+  <div class="social">
+    
+      <a href="mailto:marius.listevnik@gmail.com" target="_blank">
+        <i class="fas fa-envelope" title="Email"></i>
+      </a>
+    
+      <a href="https://github.com/list4c" target="_blank">
+        <i class="fab fa-github" title="GitHub"></i>
+      </a>
+    
+  </div>
+  
+  
+  <div class="columns">
+    <p class="column">
+      &copy; <time datetime="2023-12-15T08:02:55+00:00">2023</time>. All rights reserved.
+    </p>
+
+    <p class="column">
+      Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> & <a href="https://github.com/vfvong/jekyll-theme-tao" target="_blank">Tao</a>
+    </p>
+
+    
+    <p class="column">
+      Even little thinks matter
+    </p>
+    
+  </div>
+</footer>
+  
+    </div>
+
+    
+
+    
+  </body>
+</html>

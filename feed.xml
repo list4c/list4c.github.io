@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://list4c.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://list4c.github.io/" rel="alternate" type="text/html" /><updated>2023-12-15T08:02:55+00:00</updated><id>https://list4c.github.io/feed.xml</id><title type="html">Passiontalk blog</title><subtitle>Even little thinks matter</subtitle><entry><title type="html">What’s the difference between const, let and var in JavaScript?</title><link href="https://list4c.github.io/2023/01/03/const-let-var.html" rel="alternate" type="text/html" title="What’s the difference between const, let and var in JavaScript?" /><published>2023-01-03T21:08:00+00:00</published><updated>2023-01-03T21:08:00+00:00</updated><id>https://list4c.github.io/2023/01/03/const-let-var</id><content type="html" xml:base="https://list4c.github.io/2023/01/03/const-let-var.html"><![CDATA[<p>This article was inspired by a technical interview I’ve had recently
+to verify my skills as a test automation engineer. My answer was
+somewhat vague, but passable. If you’re applying for any position 
+where you’re going to use JavaScript on a daily basis, there’s a
+decent probability you’ll get asked this one. So let’s explore the
+differences in detail.</p>
+
+<h1 id="var">var</h1>
+
+<p><code class="language-plaintext highlighter-rouge">var</code> is an older way (before ES6 standard) to declare variables and is no
+longer recommended as there as some pitfalls that make debugging harder.</p>
+
+<p>Examples of <code class="language-plaintext highlighter-rouge">var</code> usage:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Simple cases</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="c1">// 10</span>
+
+<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">)</span> <span class="c1">// "Hello"</span>
+
+<span class="c1">// Re-assignment of value</span>
+<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">)</span> <span class="c1">// "Hello"</span>
+<span class="nx">greeting</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">🙇</span><span class="dl">"</span>  <span class="c1">// bowing gesture</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">)</span> <span class="c1">//  🙇</span>
+
+
+<span class="c1">// Declaration without value </span>
+<span class="kd">var</span> <span class="nx">later</span> <span class="c1">// declaration of the variable, without initialisation</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">later</span><span class="p">)</span> <span class="c1">// undefined</span>
+<span class="nx">later</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">later</span><span class="p">)</span> <span class="c1">// 100</span>
+
+
+
+<span class="c1">// Declaration without the var keyword. Equivalent to previous example</span>
+<span class="nx">weather</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Sunny</span><span class="dl">"</span> <span class="c1">// also possible with var</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">weather</span><span class="p">)</span> <span class="c1">// "Sunny"</span>
+
+
+
+<span class="c1">// Re-declaration of same variable</span>
+
+<span class="kd">var</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">true</span> 
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span> <span class="c1">// true</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">lifeIsHard</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>      <span class="c1">// no error, variable was re-declared</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span>  <span class="c1">// false</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span> <span class="c1">// false. The re-declaration of variable took place globally</span>
+
+
+
+<span class="c1">// var is available within function scope   </span>
+
+<span class="kd">function</span> <span class="nx">makeMoo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">cow</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Moo</span><span class="dl">"</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cow</span><span class="p">);</span> <span class="c1">// Moo</span>
+
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">cat</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Meow</span><span class="dl">"</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cat</span><span class="p">);</span> <span class="c1">// Meow</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cow</span><span class="p">);</span> <span class="c1">// Moo</span>
+    <span class="p">}</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cat</span><span class="p">)</span> <span class="c1">// would be an error if let was used </span>
+<span class="p">}</span>
+<span class="nx">makeMoo</span><span class="p">();</span>
+
+
+<span class="c1">// Hoisting - a variable can be used before declaration</span>
+
+<span class="kd">function</span> <span class="nx">hoisting</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hoistedVariable</span><span class="p">);</span> <span class="c1">// undefined</span>
+    <span class="kd">var</span> <span class="nx">hoistedVariable</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hoisted</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">hoisting</span><span class="p">();</span> <span class="c1">// undefined - instead of error </span>
+
+
+
+</code></pre></div></div>
+
+<p>The main problems concerning var:</p>
+<ul>
+  <li>it has function scope instead of block scope - see example in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var">MDN docs</a></li>
+  <li>hoisting - see example above</li>
+  <li>var creates a property on the global object</li>
+  <li>re-declaration of the same variable</li>
+</ul>
+
+<h4 id="let">let</h4>
+
+<p><code class="language-plaintext highlighter-rouge">let</code> is the new standard to declare variables. One can re-assign the value of a variable declared with <code class="language-plaintext highlighter-rouge">let</code> multiple times.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Declaration with initialisation</span>
+<span class="kd">let</span> <span class="nx">fruit</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">banana</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">orange</span><span class="dl">'</span><span class="p">];</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fruit</span><span class="p">)</span> <span class="c1">// ['apple', 'banana', 'orange']</span>
+
+<span class="c1">// Re-assignment of value</span>
+<span class="nx">fruit</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">no fruit in the basket</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fruit</span><span class="p">)</span> <span class="c1">// "no fruit in the basket"</span>
+
+<span class="c1">// Declaration without value</span>
+<span class="kd">let</span> <span class="nx">vegetables</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">vegetables</span><span class="p">)</span> <span class="c1">// undefined</span>
+
+<span class="c1">// Re-declaration of same variable (not possible in strict mode)</span>
+<span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span> <span class="c1">// true</span>
+<span class="kd">let</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">false</span> <span class="c1">// error: Identifier 'lifeIsHard' has already been declared</span>
+
+<span class="c1">// Initialisation of let variable without declaration</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">people</span><span class="p">)</span> <span class="c1">// Uncaught ReferenceError: people is not defined</span>
+<span class="kd">let</span> <span class="nx">people</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">George</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">John</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Paul</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Ringo</span><span class="dl">'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="const">const</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Declaration of constant</span>
+<span class="kd">const</span> <span class="nx">EARTH_RADIUS</span> <span class="o">=</span> <span class="mi">6371</span> <span class="c1">// note: it's a convention to use uppercase for constants</span>
+<span class="nx">EARTH_RADIUS</span> <span class="o">=</span> <span class="mi">9000</span> <span class="c1">// error: Assignment to constant variable</span>
+
+<span class="c1">// Re-declaration of same constant</span>
+<span class="kd">const</span> <span class="nx">DEFAULT_COUNTRY</span><span class="o">=</span><span class="dl">'</span><span class="s1">Poland</span><span class="dl">'</span>
+<span class="kd">const</span> <span class="nx">DEFAULT_COUNTRY</span><span class="o">=</span><span class="dl">'</span><span class="s1">Germany</span><span class="dl">'</span> <span class="c1">// error: Identifier 'defaultCountry' has already been declared</span>
+    
+<span class="c1">// Re-assignment of value</span>
+<span class="kd">const</span> <span class="nx">DEFAULT_FRUIT</span><span class="o">=</span><span class="dl">'</span><span class="s1">Banana</span><span class="dl">'</span>
+<span class="nx">DEFAULT_FRUIT</span><span class="o">=</span><span class="dl">'</span><span class="s1">Apple</span><span class="dl">'</span> <span class="c1">// error: Assignment to constant variable</span>
+
+
+</code></pre></div></div>
+<p>Key points:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">const</code> is the standard way to declare constants.</li>
+  <li>One can NOT re-assign values once assigned to a constant.</li>
+</ul>
+
+<p>More resources:</p>
+
+<ol>
+  <li><a href="https://medium.com/javascript-in-plain-english/4-reasons-why-var-is-considered-obsolete-in-modern-javascript-a30296b5f08f">4 Reasons why var is considered obsolete</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var">MDN docs: var</a></li>
+  <li>David Flanagan, “JavaScript: The Definitive Guide”, 7th Edition - pages 53-57</li>
+</ol>]]></content><author><name></name></author><summary type="html"><![CDATA[This article was inspired by a technical interview I’ve had recently to verify my skills as a test automation engineer. My answer was somewhat vague, but passable. If you’re applying for any position where you’re going to use JavaScript on a daily basis, there’s a decent probability you’ll get asked this one. So let’s explore the differences in detail.]]></summary></entry><entry><title type="html">Ten books I really want to read for my growth by mid-2023</title><link href="https://list4c.github.io/2023/01/03/10-books-to-learn-2023.html" rel="alternate" type="text/html" title="Ten books I really want to read for my growth by mid-2023" /><published>2023-01-03T21:08:00+00:00</published><updated>2023-01-03T21:08:00+00:00</updated><id>https://list4c.github.io/2023/01/03/10-books-to-learn-2023</id><content type="html" xml:base="https://list4c.github.io/2023/01/03/10-books-to-learn-2023.html"><![CDATA[<p>It’s the beginning of the year, an ideal time to make
+some plans and hope they are magically fulfilled.</p>
+
+<p>But maybe I can do better than that. Firstly, instead of planning books to read for the whole of 2023,
+I would like to list 10 books that I will read by the first half of the year. This way, if I’m behind schedule, 
+I still have half a year to catch up!</p>
+
+<p>Naturally, it would mean reading roughly two books a month, and it still seems doable. Besides, I plan to write reviews
+for every books I’ve read as part of my plan. I will share:</p>
+<ul>
+  <li>my favourite quotes</li>
+  <li>most important insights</li>
+  <li>a thumbsup, or a thumbsdown</li>
+</ul>
+
+<p>So let’s have it:</p>
+
+<ol>
+  <li>Thinking-Driven Testing: The Most Reasonable Approach to Quality Control (2019) by Adam Roman</li>
+  <li>The Agile Samurai: How Agile Masters Deliver Great Software (2017) by Jonathan Rasmussen</li>
+  <li>Non-Violent Communication (2015) by Marshall B. Rosenberg and Deepak Chopra</li>
+  <li>Full Stack Testing: A Practical Guide for Delivering High Quality Software (2022) by Gayathri Mohan</li>
+  <li>Improv(e) Your Conversations: Think on Your Feet, Witty Banter, and Always Know What to Say with Improv Comedy Techniques (2021) by Patrick King</li>
+  <li>Biegiem przez życie (2020) by Jerzy Skarżyński</li>
+  <li>Python Object-Oriented Programming (2021) by Steven F. Lott , Dusty Phillips</li>
+  <li>Invent Your Own Computer Games with Python (2016) by Al Sweigart</li>
+  <li>Bezpieczeństwo aplikacji webowych (2019) by various authors</li>
+  <li>The Scrum Guide (2020) by Ken Schwaber and Jeff Sutherland</li>
+</ol>
+
+<p>Some titles are pretty ambitious. Most of them are IT-related. I hope that posting this list and making a time-bound commitment, 
+I will increase my chances of reading those. 
+Now, if you’ll excuse, I need to go back to reading :)</p>]]></content><author><name></name></author><summary type="html"><![CDATA[It’s the beginning of the year, an ideal time to make some plans and hope they are magically fulfilled.]]></summary></entry><entry><title type="html">Offtop: Watch your step while running</title><link href="https://list4c.github.io/2023/01/02/watch-yourstep.html" rel="alternate" type="text/html" title="Offtop: Watch your step while running" /><published>2023-01-02T22:15:00+00:00</published><updated>2023-01-02T22:15:00+00:00</updated><id>https://list4c.github.io/2023/01/02/watch-yourstep</id><content type="html" xml:base="https://list4c.github.io/2023/01/02/watch-yourstep.html"><![CDATA[<p>I was running yesterdy in the forest. I had my new Brooks running shoes which felt so amazing on the feet. And I was doing pretty much everything except being focused on the running. Listening to music. Making plans in my head. Trying to make the Google Voice Assistant do what I expected from it, by saying “Decrease the volume”, getting interpreted as “Increase the volume” (haha). In short, I was not paying much attention to the surroundings.</p>
+
+<p>Suddenly, I felt a sharp pain in my foot and had to stop. A wooden branch was lying on the ground, and it felt like something pierced the shoe.</p>
+
+<p>I ran a little more and decided to examine my foot. Sure enough, the shoe was pierced by some spiky part of the branch. I took the shoe off and took out a small piece of wooden splinter from the shoe. The pain was moderate, but the surprise was much greater. My shoe was had been pierced by a piece of wood… I still find it hard to believe.</p>
+
+<p>More than 24 hours later, it still hurts, though it’s healing pretty well. But this incident somehow stuck in my head. I really wish that other runners avoid my fate. So…</p>
+
+<h2 id="three-lessons">Three Lessons</h2>
+
+<p>The lessons I draw from this incident?</p>
+
+<ul>
+  <li>Nature is powerful!</li>
+  <li>Running requires full focus. You can’t just rely on the autopilot, or you might crash</li>
+  <li>The best equipment will not protect you if you are not careful enough</li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[I was running yesterdy in the forest. I had my new Brooks running shoes which felt so amazing on the feet. And I was doing pretty much everything except being focused on the running. Listening to music. Making plans in my head. Trying to make the Google Voice Assistant do what I expected from it, by saying “Decrease the volume”, getting interpreted as “Increase the volume” (haha). In short, I was not paying much attention to the surroundings.]]></summary></entry><entry><title type="html">Use Bash aliases to speed up your work</title><link href="https://list4c.github.io/2022/12/25/use-bash-aliases.html" rel="alternate" type="text/html" title="Use Bash aliases to speed up your work" /><published>2022-12-25T22:15:00+00:00</published><updated>2022-12-25T22:15:00+00:00</updated><id>https://list4c.github.io/2022/12/25/use-bash-aliases</id><content type="html" xml:base="https://list4c.github.io/2022/12/25/use-bash-aliases.html"><![CDATA[<h3 id="bash-aliases">Bash aliases?</h3>
+
+<p>Bash aliases allow you to run complex instructions to your terminal with a just a few keystrokes. For example, you can have 
+an alias for some routine task which takes time to type and is tedious.</p>
+
+<p><code class="language-plaintext highlighter-rouge">git add</code> -&gt; <code class="language-plaintext highlighter-rouge">gad</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">git commit -m</code> -&gt; <code class="language-plaintext highlighter-rouge">gct</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">git push</code> -&gt; <code class="language-plaintext highlighter-rouge">gps</code></p>
+
+<p>This small example shows how three git commands
+that often form part of your everyday workflow
+can be executed much faster using aliases.</p>
+
+<h3 id="how-to-set-up-bash-aliases-ubuntu">How to set up bash aliases (Ubuntu)</h3>
+
+<p>The bash aliases can be set up within the bashrc file (<code class="language-plaintext highlighter-rouge">.bashrc</code>), but it’s in my opinion
+much more convenient to use a dedicated file <code class="language-plaintext highlighter-rouge">.bash_aliases</code>, where you define your aliases only.</p>
+
+<h4 id="1-check-if-your-bashrc-file-contains-an-entry-like-this">1. Check if your bashrc file contains an entry like this:</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+</code></pre></div></div>
+<p>This piece of code checks for the existence of <code class="language-plaintext highlighter-rouge">.bash_aliases</code> file within the home directory
+of current user and will make your aliases available to the terminal.</p>
+
+<p>To check the <code class="language-plaintext highlighter-rouge">bashrc</code> file within <code class="language-plaintext highlighter-rouge">vi</code> text editor, type these commands in your terminal:</p>
+
+<p><code class="language-plaintext highlighter-rouge">vi ~/.bashrc</code></p>
+
+<p><strong>Note</strong>: if you don’t feel comfortable viewing and editing <code class="language-plaintext highlighter-rouge">bashrc</code> file with vi, you can use the default Linux text editor,
+gedit. In Ubuntu, go to the Applications menu, type <code class="language-plaintext highlighter-rouge">Text editor</code> or <code class="language-plaintext highlighter-rouge">gedit</code> and then look for the <code class="language-plaintext highlighter-rouge">.bashrc</code> in the <code class="language-plaintext highlighter-rouge">Home</code> 
+directory of your user. This file can sometimes be hidden by default, so make sure you enable the display of hidden files.</p>
+
+<p><strong>Note 2</strong>: I use <code class="language-plaintext highlighter-rouge">vi</code> to show how I edit files in the terminal, but <code class="language-plaintext highlighter-rouge">vim</code> is an equally valid option and the same commands can be used with it.</p>
+
+<h4 id="2-optional-activate-bash_aliases-in-bashrc">2. Optional: Activate <code class="language-plaintext highlighter-rouge">bash_aliases</code> in bashrc</h4>
+
+<p><em>Skip this step if you found an entry like in (1) within your bashrc file.</em></p>
+
+<p>To add above snippet to your bashrc file with vi:</p>
+<ul>
+  <li>with the keyboard arrow keys find a place in the document where you can paste the snippet
+    <ul>
+      <li>If you need to make some space, press <code class="language-plaintext highlighter-rouge">i</code> for insert mode. Exit insert mode using <code class="language-plaintext highlighter-rouge">Escape</code> key</li>
+    </ul>
+  </li>
+  <li>select the above snippet with your mouse</li>
+  <li>with the middle mouse button paste the snippet
+    <ul>
+      <li>You can also use copy the snippet with ctr-C, mouse-right click in vi, select “Paste” option from context menu</li>
+    </ul>
+  </li>
+  <li>Save the document using <code class="language-plaintext highlighter-rouge">:wq</code>
+    <ul>
+      <li>If you made a mistake, you can type ‘:wq!’ and this will abort changes</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Now it’s time to reload the bashrc configuration. Go to the terminal (if you’re not there already) and type:</p>
+
+<p><code class="language-plaintext highlighter-rouge">source ~/.bashrc</code></p>
+
+<p>If you see no output, that’s fine. Your changes were saved.</p>
+
+<h4 id="3-check-if-you-have-the-bash_aliases-file">3. Check if you have the .bash_aliases file</h4>
+
+<p>Now that the bashrc file is linked yo the <code class="language-plaintext highlighter-rouge">bash_aliases</code> file,  you can add 
+aliases there and make available by reloading the <code class="language-plaintext highlighter-rouge">bashrc</code> just as we did in the end of step 2.</p>
+
+<p>Check if you have the bash_aliases already in your home directory. Using the terminal:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ls .bash*</code></p>
+
+<p>The output for me was</p>
+
+<p><code class="language-plaintext highlighter-rouge">.bash_aliases  .bash_history  .bash_logout  .bash_profile  .bashrc</code></p>
+
+<p>I already have the <code class="language-plaintext highlighter-rouge">.bash_aliases</code> file, great.</p>
+
+<h5 id="4-create-the-bashrc-file">4. Create the <code class="language-plaintext highlighter-rouge">.bashrc</code> file</h5>
+
+<p><em>Skip this step if you found the <code class="language-plaintext highlighter-rouge">.bash_aliases</code> in your home directory</em></p>
+
+<p>Here are the steps in vi/vim:</p>
+
+<p><code class="language-plaintext highlighter-rouge">cd ~</code>
+<code class="language-plaintext highlighter-rouge">touch .bash_aliases</code></p>
+
+<p>This will create an empty file that you can use in next step.</p>
+
+<h4 id="5-add-your-test-alias">5. Add your test alias</h4>
+
+<p>Let’s add a fun alias - a mock response of the terminal whenever you type <code class="language-plaintext highlighter-rouge">hi</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">cd ~</code><br />
+<code class="language-plaintext highlighter-rouge">vi .bash_aliases</code></p>
+
+<p>Now that you’re with vi editor, press <code class="language-plaintext highlighter-rouge">i</code> for insert mode and write (or paste) this alias:</p>
+
+<p><code class="language-plaintext highlighter-rouge">alias hi='echo "Oh hello, sunshine! You look stunning today!!"'
+</code></p>
+
+<h4 id="lets-remember-a-few-key-points">Let’s remember a few key points:</h4>
+<ul>
+  <li>There must be not blank spaces between <code class="language-plaintext highlighter-rouge">alias</code>, the equals sign, and the alias value.</li>
+  <li>The alias value must be enclosed within quotes (single or double, your choice).</li>
+  <li>The alias has to be saved and then the bashrc file reloaded. Only then will it be available in your temrinal.</li>
+</ul>
+
+<p>Save changes and activate alias:</p>
+<ul>
+  <li>leave insert mode by pressing <code class="language-plaintext highlighter-rouge">Escape</code> key</li>
+  <li>type <code class="language-plaintext highlighter-rouge">:wq</code></li>
+  <li><code class="language-plaintext highlighter-rouge">source ~/.bashrc</code></li>
+</ul>
+
+<h4 id="6-check-if-the-test-alias-works">6. Check if the test alias works</h4>
+
+<p>Now, whenever you type <code class="language-plaintext highlighter-rouge">hi</code> in the terminal, you will be greeted by:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Oh hello, sunshine! You look stunning today!!</code></p>
+
+<p>So now we know how aliases work in general. To make new aliases, simply make a new line and add
+a new alias.</p>
+
+<h5 id="7-bonous-access-and-add-aliases-faster-using-aliases-">7. Bonous: Access and add aliases faster using… aliases :)</h5>
+
+<p>I have two aliases defined that help me quickly access the saved aliases and add new ones:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alias aldit='vim /home/list4c/.bash_aliases'
+alias reload='source /home/list4c/.bashrc'
+</code></pre></div></div>
+
+<p>With these aliases my workflow goes like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aldit
+(add new alias in new line using vim)
+(Esc)
+:wq
+reload
+</code></pre></div></div>
+<p>This is quick enough for me, especially that the saved aliases save me
+a lot of typing in the long run.<br />
+Try having meta-aliases as above, I really like them.</p>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<p>Bash aliases can speed up your work immensely. I’ve been using them for:</p>
+<ul>
+  <li>git commands</li>
+  <li>running gradle commands</li>
+  <li>running the React Native bundler with some flags</li>
+  <li>running jekyll commands</li>
+  <li>and more…</li>
+</ul>
+
+<p>Hope this post was beneficial for you in any way. If you have any questions, feel free to contact me.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Bash aliases?]]></summary></entry><entry><title type="html">How to access your favourite docs the green way</title><link href="https://list4c.github.io/2022/07/03/offline-docs.html" rel="alternate" type="text/html" title="How to access your favourite docs the green way" /><published>2022-07-03T11:59:00+00:00</published><updated>2022-07-03T11:59:00+00:00</updated><id>https://list4c.github.io/2022/07/03/offline-docs</id><content type="html" xml:base="https://list4c.github.io/2022/07/03/offline-docs.html"><![CDATA[<p>Some time ago I was writing a Cypress test and opening a lot of tabs with Cypress documentation. At some point I became haunted by the idea that opening these doc pages over and over multiple times is a waste of energy and may have some impact on climate change.</p>
+
+<p>Hours later I was becoming acquainted with the reports about the impact of ICT (Informatics and Communication Technology) on our planet. I learned that although many digital services, like AI, help us optimize resources and reduce waste, ICT still contributes to green house gas emissions (GHGE) because of infrastructure needed to run it. The level of GHGE emissions attributed to ICT is increasing with every year, as there are more and more digital services and Internet users in general. Bottom line: some of the most energy-hungry forms of ICT are video streaming, bitcoin mining and AI. Compared to those, my transgressions appeared minute. But I still felt something could be done about my browsing habits.</p>
+
+<p>So I restated my problem: I was opening and closing the same websites, thereby leading to waste. And I came up with several ideas, specifically for the dev documentation:</p>
+
+<h3 id="cloning-the-whole-docs-repo">cloning the whole docs repo</h3>
+
+<p><img src="/assets/images/cypress-docs.png" alt="Cypress docs running on localhost" class="img-responsive" /></p>
+
+<p>“Great idea” :D, I thought to myself. I could clone the <a href="docs.cypress.io/">repo of Cypress docs</a> and would then be able to save on network requests. But I soon came to the conclusion that it was only a half-great solution. Cypress documentation is pretty big. As you can imagine, cloning the whole repo and installing all the dependencies was more than a couple hundred megabytes. Not that sustainable I guess… And if you want to have some other documentation repositories  accessible offline in the same manner, you would need to follow the same procedure for all of them. Too time-consuming and resource-exhaustive.</p>
+
+<h3 id="devdocsio"><a href="https://devdocs.io/">devdocs.io</a></h3>
+
+<p><img src="/assets/images/devdocs.png" alt="Dev.docs example" class="img-responsive" /></p>
+
+<p>So I looked a bit further and found devdocs.io. You could compare it to a wiki with offline capabilities. It has lots of APIs listed, i.e. programming languages, markup languages, frameworks, and you can select chosen documentation packages to your local storage so that browsing the docs requires no internet at all. Yippee! Finally I found something that was a comprehensive answer to my problem.</p>
+
+<h3 id="zeal"><a href="https://zealdocs.org/">Zeal</a></h3>
+
+<p><img src="/assets/images/zeal-example.png" alt="Dev.docs example" class="img-responsive" /></p>
+
+<p>I thought I found the ultimate solution with devdocs.io, but some time a later a developer in my team told us about an app that did the same and could be installed as Linux package. Enter Zeal. Zeal is a pretty powerful tool which allows you to choose from over 200 APIs. It is inspired by <a href="https://kapeli.com/dash">Dash</a>, a similar tool that works on MacOS. Zeal also uses Dash’s documentation library, so I guess the two of them have identical resources.</p>
+
+<p>How to install Zeal in Debian/Ubuntu distributions:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">sudo </span>apt <span class="nb">install </span>zeal </code></pre></figure>
+
+<p>Installation  worked nicely in Ubuntu 20.10 but then I tried installing it on my Debian machine:</p>
+
+<p><img src="/assets/images/zeal-non.png" alt="Example of a search in zeal" class="img-responsive" /></p>
+
+<p>Ouch! Not working in Debian Bullseye?</p>
+
+<p>Indeed. The <em>zeal</em> package is not supported in the stable version of Debian. But you can add one of the Debian packages that contain <em>zeal</em> and after updating your package sources, you’re good to go.</p>
+
+<p>The list of packages which support zeal in Debian can be found <a href="https://packages.Debian.org/search?suite=all&amp;searchon=names&amp;keywords=zeal">here</a>. One of the packages is bullseye-backports - a pretty clever way to get updates for a specific package from the Debian testing distribution (at the time of publishing this post, the codename for next release is <em>bookworm</em>) to your stable Bullseye system. You get the best of both worlds, i.e. a package that has not arrived in Debian stable yet, or a newer version of a package which is not yet available for users of the stable distribution.</p>
+
+<p>How to enable a backports repository for my Debian Bullseye? I followed advice from <a href="https://wiki.Debian.org/Backports">this article</a>.If you don’t want to read through it and need an easy fix, just type this in your terminal (use <code class="language-plaintext highlighter-rouge">sudo</code> if needed)</p>
+
+<p><code class="language-plaintext highlighter-rouge">apt update</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">apt edit-sources</code></p>
+
+<p>(here choose a text editor by typing a number)</p>
+
+<p>Now at this point it’s pretty possible that you will see a list of repositories for updates to your release.</p>
+
+<p>This is how it looked in my vim editor after enabling the Bullseye-backports:</p>
+
+<p><img src="/assets/images/apt-sources.png" alt="Apt sources content in the vim editor" class="img-responsive" /></p>
+
+<p>As you can seen, there is a list called Bullseye-updates. Below you will see a list of links, some of them commented out. All that needs to be done is to remove the <code class="language-plaintext highlighter-rouge">#</code> at <code class="language-plaintext highlighter-rouge">deb http://deb.debian.org/debian bullseye-backports main contrib non-free</code> and save changes to the document. (Note: you don’t need the <a href="https://unix.stackexchange.com/questions/20504/the-difference-between-deb-versus-deb-src-in-sources-list">deb-src package</a> if you’re not developing or testing Debian packages).</p>
+
+<p>However, if you do not see such a ready-made list, add <code class="language-plaintext highlighter-rouge">deb http://deb.debian.org/debian bullseye-backports main contrib non-free</code> at the bottom and save changes.</p>
+
+<p>Then:</p>
+
+<p><code class="language-plaintext highlighter-rouge">apt update</code>
+<code class="language-plaintext highlighter-rouge">apt install zeal</code></p>
+
+<p>And you’re there (for Debian Bullseye).</p>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<p>I must confess that using offline documentation has not become my second nature yet. But when you realise that you can have a tool which contains many documentations in one place, such as Zeal or devdocs.io, you start to appreciate it.</p>
+
+<p>Have I found all the libraries I was interested in? Yes, pretty much all of them, except <a href="https://github.com/wix/detox"><em>detox</em></a>. Some libraries were present in devdocs.io, but no in Zeal and I have a feeling that devdocs.io might have a bit more of them than Zeal, e.g. I found Jest and Cypress in devdocs.io, but not in Zeal. So I’m not sure yet which of these two I will be using most, but definitely plan to use them and:</p>
+<ul>
+  <li>save precious energy</li>
+  <li>save time</li>
+</ul>
+
+<p>Hope it helps you as well. Till next time!</p>
+
+<h3 id="links">Links:</h3>
+
+<p><a href="https://datareportal.com/reports/digital-2022-global-overview-report">Digital 2022: Global Overview Report</a> - Comprehensive report with lots of data on the number of Internet users worldwide, trends, market share and lots of other interesting findings
+<a href="https://climate.nasa.gov/facts/">Global climate change: Vital Signs of the Planet</a> - Website by NASA clearly presented the facts on global warming
+<a href="https://www.sciencedirect.com/science/article/abs/pii/S095965261733233X">Assessing ICT global emissions footprint: Trends to 2040 &amp; recommendations</a> - Scientific article on measuring the carbon footprint of ICT, which may rise up to even 16% of total GHGE emissions in 2040
+<a href="https://www.bbc.com/future/article/20200305-why-your-internet-habits-are-not-as-clean-as-you-think">Why your internet habits are not as clean as you think</a> - a very well written article from BBC which presents most important facts about the carbon footprint of ICT and what we can to reduce it as individual users
+<a href="https://theshiftproject.org/en/carbonalyser-browser-extension/">Carbonalyser website</a> - Carbonalyser is a browser extension published by NGO The Shift Project. It makes you more aware of the green house gas emissions you produce as a user and shows whch websites are most CO2-intensive.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Some time ago I was writing a Cypress test and opening a lot of tabs with Cypress documentation. At some point I became haunted by the idea that opening these doc pages over and over multiple times is a waste of energy and may have some impact on climate change.]]></summary></entry><entry><title type="html">e2e testing with Detox</title><link href="https://list4c.github.io/2022/04/26/Detox.html" rel="alternate" type="text/html" title="e2e testing with Detox" /><published>2022-04-26T12:31:00+00:00</published><updated>2022-04-26T12:31:00+00:00</updated><id>https://list4c.github.io/2022/04/26/Detox</id><content type="html" xml:base="https://list4c.github.io/2022/04/26/Detox.html"><![CDATA[<h3 id="what-is-detox">What is detox?</h3>
+
+<p>Detox is an open-source framework for testing mobile applications, especially those written in React Native. It is highly configurable and easy to install using <code class="language-plaintext highlighter-rouge">yarn</code> or <code class="language-plaintext highlighter-rouge">npm</code>. It was created by developers of <a href="https://www.wix.com">Wix</a> company to aid in their release process.</p>
+
+<h3 id="where-can-you-get-detox">Where can you get detox?</h3>
+
+<p>The docs for detox are available <a href="https://wix.github.io/Detox/docs/introduction/getting-started/">here</a>. You might also be interested in <a href="https://hackernoon.com/detox-gray-box-end-to-end-testing-framework-for-mobile-apps-196ccd9564ce">this</a> article from the authors of Detox, where they explain the road towards creating a testing framework and how they tried Appium but were not satisfied with the flakiness.</p>
+
+<h3 id="flakiness---serious-problem">Flakiness - serious problem</h3>
+
+<p>I’ll bring one interesting fact from that second article: In a test suite with 100 tests, a 0.5% chance of any test failing due to flakiness means that there is almost 40% chance of a failed test run (!). Think about larger suites… this calculation really stuck in my mind. Fortunately, detox comes to the rescue. It does not require sleeps and waits. What is more, it automatically detects when application is in idle state.</p>
+
+<h3 id="conclusions">Conclusions</h3>
+
+<p>This short article was meant to provide a concise picture of detox as a testing framework. I hope it helps you to ensure a stable release process without flake.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[What is detox?]]></summary></entry></feed>

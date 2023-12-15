@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="/assets/css/normalize.css"/>
+	<link rel="stylesheet" href="/assets/css/open-color.css"/>
+	<link rel="stylesheet" href="/assets/css/tao/styles.css"/>
+
+  <script async src="https://use.fontawesome.com/releases/v6.0.0/js/all.js"></script>
+
+  
+
+</head>
+
+  <body>
+    <div class="wrapper">
+      <header class="masthead">
+  <h2 class="masthead-title">
+    <a href="/">Passiontalk blog</a>
+  </h2>
+  
+  
+    <nav class="nav">
+      
+        <a class="nav-item " href="/">
+          Home
+        </a>
+      
+        <a class="nav-item " href="/about">
+          About
+        </a>
+      
+        <a class="nav-item " href="/roadmap">
+          Roadmap
+        </a>
+      
+        <a class="nav-item " href="/archive">
+          Archive
+        </a>
+      
+      </nav>
+  
+</header>
+
+      <main>
+        <article class="post">
+  <div class="post-meta post-meta-top">
+    <div>
+      <time datetime="2023-01-03T21:08:00+00:00">
+        <i class="fa-solid fa-calendar-days"></i> 03 Jan 2023
+      </time></div>
+    
+    
+  </div>
+
+  <h1 class="post-title">What's the difference between const, let and var in JavaScript?</h1>
+  
+
+  
+
+  <span class="post-metadata"> Published 11 months and 2 weeks ago. </span> 
+
+  <span class="post-metadata" title="Estimated read time">
+  Reading time: 
+  
+  
+    5 mins
+  
+</span>
+
+
+
+  <div class="post-content">
+    <p>This article was inspired by a technical interview I’ve had recently
+to verify my skills as a test automation engineer. My answer was
+somewhat vague, but passable. If you’re applying for any position 
+where you’re going to use JavaScript on a daily basis, there’s a
+decent probability you’ll get asked this one. So let’s explore the
+differences in detail.</p>
+
+<h1 id="var">var</h1>
+
+<p><code class="language-plaintext highlighter-rouge">var</code> is an older way (before ES6 standard) to declare variables and is no
+longer recommended as there as some pitfalls that make debugging harder.</p>
+
+<p>Examples of <code class="language-plaintext highlighter-rouge">var</code> usage:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Simple cases</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="c1">// 10</span>
+
+<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">)</span> <span class="c1">// "Hello"</span>
+
+<span class="c1">// Re-assignment of value</span>
+<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Hello</span><span class="dl">"</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">)</span> <span class="c1">// "Hello"</span>
+<span class="nx">greeting</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">🙇</span><span class="dl">"</span>  <span class="c1">// bowing gesture</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span><span class="p">)</span> <span class="c1">//  🙇</span>
+
+
+<span class="c1">// Declaration without value </span>
+<span class="kd">var</span> <span class="nx">later</span> <span class="c1">// declaration of the variable, without initialisation</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">later</span><span class="p">)</span> <span class="c1">// undefined</span>
+<span class="nx">later</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">later</span><span class="p">)</span> <span class="c1">// 100</span>
+
+
+
+<span class="c1">// Declaration without the var keyword. Equivalent to previous example</span>
+<span class="nx">weather</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Sunny</span><span class="dl">"</span> <span class="c1">// also possible with var</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">weather</span><span class="p">)</span> <span class="c1">// "Sunny"</span>
+
+
+
+<span class="c1">// Re-declaration of same variable</span>
+
+<span class="kd">var</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">true</span> 
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span> <span class="c1">// true</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">lifeIsHard</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>      <span class="c1">// no error, variable was re-declared</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span>  <span class="c1">// false</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span> <span class="c1">// false. The re-declaration of variable took place globally</span>
+
+
+
+<span class="c1">// var is available within function scope   </span>
+
+<span class="kd">function</span> <span class="nx">makeMoo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">cow</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Moo</span><span class="dl">"</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cow</span><span class="p">);</span> <span class="c1">// Moo</span>
+
+    <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">cat</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Meow</span><span class="dl">"</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cat</span><span class="p">);</span> <span class="c1">// Meow</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cow</span><span class="p">);</span> <span class="c1">// Moo</span>
+    <span class="p">}</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">cat</span><span class="p">)</span> <span class="c1">// would be an error if let was used </span>
+<span class="p">}</span>
+<span class="nx">makeMoo</span><span class="p">();</span>
+
+
+<span class="c1">// Hoisting - a variable can be used before declaration</span>
+
+<span class="kd">function</span> <span class="nx">hoisting</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hoistedVariable</span><span class="p">);</span> <span class="c1">// undefined</span>
+    <span class="kd">var</span> <span class="nx">hoistedVariable</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">hoisted</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">hoisting</span><span class="p">();</span> <span class="c1">// undefined - instead of error </span>
+
+
+
+</code></pre></div></div>
+
+<p>The main problems concerning var:</p>
+<ul>
+  <li>it has function scope instead of block scope - see example in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var">MDN docs</a></li>
+  <li>hoisting - see example above</li>
+  <li>var creates a property on the global object</li>
+  <li>re-declaration of the same variable</li>
+</ul>
+
+<h4 id="let">let</h4>
+
+<p><code class="language-plaintext highlighter-rouge">let</code> is the new standard to declare variables. One can re-assign the value of a variable declared with <code class="language-plaintext highlighter-rouge">let</code> multiple times.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Declaration with initialisation</span>
+<span class="kd">let</span> <span class="nx">fruit</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">apple</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">banana</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">orange</span><span class="dl">'</span><span class="p">];</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fruit</span><span class="p">)</span> <span class="c1">// ['apple', 'banana', 'orange']</span>
+
+<span class="c1">// Re-assignment of value</span>
+<span class="nx">fruit</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">no fruit in the basket</span><span class="dl">"</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fruit</span><span class="p">)</span> <span class="c1">// "no fruit in the basket"</span>
+
+<span class="c1">// Declaration without value</span>
+<span class="kd">let</span> <span class="nx">vegetables</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">vegetables</span><span class="p">)</span> <span class="c1">// undefined</span>
+
+<span class="c1">// Re-declaration of same variable (not possible in strict mode)</span>
+<span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">lifeIsHard</span><span class="p">);</span> <span class="c1">// true</span>
+<span class="kd">let</span> <span class="nx">lifeIsHard</span> <span class="o">=</span> <span class="kc">false</span> <span class="c1">// error: Identifier 'lifeIsHard' has already been declared</span>
+
+<span class="c1">// Initialisation of let variable without declaration</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">people</span><span class="p">)</span> <span class="c1">// Uncaught ReferenceError: people is not defined</span>
+<span class="kd">let</span> <span class="nx">people</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">George</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">John</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Paul</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Ringo</span><span class="dl">'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="const">const</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Declaration of constant</span>
+<span class="kd">const</span> <span class="nx">EARTH_RADIUS</span> <span class="o">=</span> <span class="mi">6371</span> <span class="c1">// note: it's a convention to use uppercase for constants</span>
+<span class="nx">EARTH_RADIUS</span> <span class="o">=</span> <span class="mi">9000</span> <span class="c1">// error: Assignment to constant variable</span>
+
+<span class="c1">// Re-declaration of same constant</span>
+<span class="kd">const</span> <span class="nx">DEFAULT_COUNTRY</span><span class="o">=</span><span class="dl">'</span><span class="s1">Poland</span><span class="dl">'</span>
+<span class="kd">const</span> <span class="nx">DEFAULT_COUNTRY</span><span class="o">=</span><span class="dl">'</span><span class="s1">Germany</span><span class="dl">'</span> <span class="c1">// error: Identifier 'defaultCountry' has already been declared</span>
+    
+<span class="c1">// Re-assignment of value</span>
+<span class="kd">const</span> <span class="nx">DEFAULT_FRUIT</span><span class="o">=</span><span class="dl">'</span><span class="s1">Banana</span><span class="dl">'</span>
+<span class="nx">DEFAULT_FRUIT</span><span class="o">=</span><span class="dl">'</span><span class="s1">Apple</span><span class="dl">'</span> <span class="c1">// error: Assignment to constant variable</span>
+
+
+</code></pre></div></div>
+<p>Key points:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">const</code> is the standard way to declare constants.</li>
+  <li>One can NOT re-assign values once assigned to a constant.</li>
+</ul>
+
+<p>More resources:</p>
+
+<ol>
+  <li><a href="https://medium.com/javascript-in-plain-english/4-reasons-why-var-is-considered-obsolete-in-modern-javascript-a30296b5f08f">4 Reasons why var is considered obsolete</a></li>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var">MDN docs: var</a></li>
+  <li>David Flanagan, “JavaScript: The Definitive Guide”, 7th Edition - pages 53-57</li>
+</ol>
+
+  </div>
+
+  
+</article>
+
+<div class="pagination">
+  
+    <a class="prev post-prev" href="/2023/01/02/watch-yourstep.html">
+      <i class="fas fa-chevron-left"></i> <span class="">Offtop: Watch your step while running
+</span>
+    </a>
+  
+  
+  
+    <a class="next post-next" href="/2023/01/03/10-books-to-learn-2023.html">
+      <span class="">Ten books I really want to read for my growth by mid-2023
+</span> <i class="fas fa-chevron-right"></i> 
+    </a>
+  
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+  var disqus_config = function () {
+    this.page.url = 'https://list4c.github.io/2023/01/03/const-let-var.html';
+    this.page.identifier = 'https://list4c.github.io/2023/01/03/const-let-var.html';
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+
+    s.src = 'https://list4c.disqus.com/embed.js';
+
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </main>
+      <footer class="footer">
+  
+  <div class="social">
+    
+      <a href="mailto:marius.listevnik@gmail.com" target="_blank">
+        <i class="fas fa-envelope" title="Email"></i>
+      </a>
+    
+      <a href="https://github.com/list4c" target="_blank">
+        <i class="fab fa-github" title="GitHub"></i>
+      </a>
+    
+  </div>
+  
+  
+  <div class="columns">
+    <p class="column">
+      &copy; <time datetime="2023-12-15T08:02:55+00:00">2023</time>. All rights reserved.
+    </p>
+
+    <p class="column">
+      Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> & <a href="https://github.com/vfvong/jekyll-theme-tao" target="_blank">Tao</a>
+    </p>
+
+    
+    <p class="column">
+      Even little thinks matter
+    </p>
+    
+  </div>
+</footer>
+  
+    </div>
+
+    
+
+    
+  </body>
+</html>
